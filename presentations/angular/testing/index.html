@@ -1,50 +1,108 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>Bare presentation (start from this)</title>
+    <title>Testing Angular</title>
 
-		<link rel="stylesheet" href="/css/reset.css">
-		<link rel="stylesheet" href="/css/reveal.css">
-		<link rel="stylesheet" href="/css/theme/black.css">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/reveal.css">
+    <link rel="stylesheet" href="/css/theme/black.css">
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="/lib/css/monokai.css">
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="/lib/css/monokai.css">
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? '/css/print/pdf.css' : '/css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
-		</div>
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? '/css/print/pdf.css' : '/css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <!-- Title -->
+        <section>
+            <h1>Testing <img class="inline" src="./assets/angular.svg"></h1>
+            <p>En præsentation omhandlende hvordan vi tester i Angular</p>
+        </section>
 
-		<script src="/js/reveal.js"></script>
+        <!-- Table of contents -->
+        <section>
+            <h1>Agenda</h1>
+            <p>Vi skal igennem:</p>
+            <ul>
+                <li>Jasmine og Matchers</li>
+                <li>Angular's TestBed</li>
+                <li>ngMocks</li>
+                <li>Spectator</li>
+            </ul>
+        </section>
 
-		<script>
-			// More info about config & dependencies:
-			// - https://github.com/hakimel/reveal.js#configuration
-			// - https://github.com/hakimel/reveal.js#dependencies
-			Reveal.initialize({
-				hash: true,
-				dependencies: [
-					{ src: '/plugin/markdown/marked.js' },
-					{ src: '/plugin/markdown/markdown.js' },
-					{ src: '/plugin/highlight/highlight.js' },
-					{ src: '/plugin/notes/notes.js', async: true }
-				]
-			});
-		</script>
-	</body>
+        <!-- Jasmine and Matchers -->
+        <section>
+            <h2>
+				<img class="inline" src="./assets/jasmine.svg">
+				<br>
+                Jasmine og Matchers
+            </h2>
+        </section>
+
+        <!-- TestBed -->
+        <section>
+            <h2>Angular's TestBed</h2>
+        </section>
+
+        <!-- ngMocks -->
+        <section>
+            <h2>ng-mocks</h2>
+            <p>Et 3. parts library, som kan hentes herfra:
+                <a href="https://github.com/ike18t/ng-mocks">https://github.com/ike18t/ng-mocks</a>
+            </p>
+        </section>
+
+        <!-- @ngneat/spectator -->
+        <section>
+			<!-- Title slide -->
+			<section>
+				<h2>Spectator</h2>
+				<p>Et 3. parts library som kan hentest herfra:
+					<a href="https://github.com/ngneat/spectator/">https://github.com/ngneat/spectator/</a>
+				</p>
+				<img class="inline" src="./assets/spectator.svg">
+			</section>
+        </section>
+
+		<!-- Final slide (link to presentation etc.) -->
+		<section>
+			<h2>Disse slides?</h2>
+			<p>
+				Kan hentes og ses hos:
+				<a href="https://presentations.skarby.info/presentations/angular/testing">https://presentations.skarby.info/</a>
+			</p>
+		</section>
+    </div>
+</div>
+
+<script src="/js/reveal.js"></script>
+
+<script>
+    // More info about config & dependencies:
+    // - https://github.com/hakimel/reveal.js#configuration
+    // - https://github.com/hakimel/reveal.js#dependencies
+    Reveal.initialize({
+        hash: true,
+        dependencies: [
+            {src: '/plugin/markdown/marked.js'},
+            {src: '/plugin/markdown/markdown.js'},
+            {src: '/plugin/highlight/highlight.js'},
+            {src: '/plugin/notes/notes.js', async: true}
+        ]
+    });
+</script>
+</body>
 </html>
