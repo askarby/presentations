@@ -531,13 +531,76 @@ describe('Nested Component Structure', () => {
         <!-- @ngneat/spectator -->
         <section>
 			<!-- Title slide -->
-			<section>
-				<h2>Spectator</h2>
-				<p>Et 3. parts library som kan hentest herfra:
-					<a href="https://github.com/ngneat/spectator/">https://github.com/ngneat/spectator/</a>
-				</p>
-				<img class="inline" src="./assets/spectator.svg">
+			<section data-background="https://media.giphy.com/media/8V6fQeeWTRHq0/giphy.gif">
+				<h2 class="glow">Spectator</h2>
 			</section>
+
+            <!-- Link (where to get spectator) -->
+            <section>
+                <p>Et 3. parts library som kan hentest herfra:
+                    <a href="https://github.com/ngneat/spectator/">https://github.com/ngneat/spectator/</a>
+                </p>
+                <img class="inline" src="./assets/spectator.svg">
+            </section>
+
+            <!-- What is Spectator -->
+            <section>
+                <h2>Hvad er Spectator?</h2>
+                <p>Et library / framework som...</p>
+                <ul>
+                    <li class="fragment">Wrapper <img class="inline" src="./assets/angular.svg"> Angular's TestBed</li>
+                    <li class="fragment">Fjerner boilerplate (fra brug af TestBed)</li>
+                    <li class="fragment">Leverer utilities</li>
+                    <li class="fragment">... og matchers</li>
+                </ul>
+            </section>
+
+            <!-- Usage Principle -->
+            <section>
+                <h2>Princippet</h2>
+                <p>... bag brug af <b>Spectator</b> er:</p>
+                <ul>
+                    <li class="fragment">Opret en factory</li>
+                    <li class="fragment">Brug factory til at få fat i Spectator-instans</li>
+                    <li class="fragment">Brug Spectator-instans til at manipulere med:
+                        <ul>
+                            <li>Component</li>
+                            <li>Query DOM'en</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Spectator Example -->
+            <section>
+                <pre><code class="hljs" data-trim>
+describe('Testing with Spectator', () => {
+    const createComponent = createComponentFactory({
+        component: MyComponent,
+        declarations: ...,
+        providers: ...
+        mocks: ...
+    });
+    let spectator: Spectator&lt;MyComponent&gt;;
+
+    beforeEach(() => {
+        spectator = createComponent();
+    });
+});
+                </code></pre>
+            </section>
+
+            <!-- Additional usages -->
+            <section>
+                <p>... der findes yderligere factory creators:</p>
+                <ul>
+                    <li><code>createHostFactory</code></li>
+                    <li><code>createRoutingFactory</code></li>
+                    <li><code>createDirectiveFactory</code></li>
+                    <li><code>createServiceFactory</code></li>
+                    <li>m.fl.</li>
+                </ul>
+            </section>
         </section>
 
 		<!-- Final slide (link to presentation etc.) -->
