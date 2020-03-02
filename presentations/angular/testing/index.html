@@ -48,7 +48,7 @@
         <section>
             <!-- Intro -->
             <section data-background="https://media.giphy.com/media/3o72FdPFIn4VjDDfMc/giphy.gif">
-                <h2>Hvorfor?</h2>
+                <h2 class="glow">Hvorfor?</h2>
                 <p>Hvorfor skal vi teste vores kode?</p>
             </section>
 
@@ -163,7 +163,7 @@ describe('CalculatorService', () => {
             <section>
                 <h2>Matchers</h2>
                 <p>Jasmine kommer med en del indbyggede matchers...</p>
-                <pre><code class="hljs">expect(instance).toBe(instance);
+                <pre><code class="hljs" data-trim>expect(instance).toBe(instance);
 expect(number).toBeCloseTo(number, decimalPlaces);
 expect(mixed).toBeDefined();
 expect(mixed).toBeFalsy();
@@ -199,7 +199,8 @@ expect(fn).toThrowError(string);
             <!-- Spies and Mocks -->
             <section>
                 <p>Lad os kigge på Spies og Mocks, med følgende kontekst:</p>
-                <pre><code class="hljs">class NameRegistry {
+                <pre><code class="hljs" data-trim>
+class NameRegistry {
     names = ['John', 'Paul', 'George', 'Ringo' ]
     getName() { return this.names[Math.floor(Math.random() * this.names.length)]}
 }
@@ -246,13 +247,55 @@ describe('Greeter', () => {
                 </code></pre>
             </section>
 
+            <!-- Asynchronous testing (observables) -->
+            <section>
+                <h2>Asynkron test</h2>
+                <p>...når vi bruger observables</p>
+                <pre><code class="hljs" data-trim data-line-numbers="7">
+describe('Observables', () => {
+    const observable$ = ...
+
+    it('should indicate when observable is done', (done) => {
+        observable$.subscribe((data) => {
+            expect(data).toBeTruthy();
+            done();
+        });
+    });
+});
+                </code></pre>
+            </section>
+
+            <!-- Asynchronous testing (promises) -->
+            <section>
+                <h2>Asynkron test</h2>
+                <p>...når vi bruger promises</p>
+                <pre><code class="hljs" data-trim data-line-numbers="7|11-12">
+describe('Promises', () => {
+    const createPromise = ...
+
+    it('should indicate when promise is done', (done) => {
+        createPromise().then((data) => {
+            expect(data).toBeTruthy();
+            done();
+        });
+    });
+
+    it('should use async mechanism for ES2015', async () => {
+        const data = await createPromise();
+        expect(data).toBeTruthy();
+    });
+});
+                </code></pre>
+            </section>
+
             <!-- Rules for testing in Jasmine -->
             <section>
                 <h2>Regler for at teste</h2>
                 <ul>
                     <li>Beskriv altid hvad du tester</li>
+                    <li class="fragment">Sørg altid for at ha' expectations (<code>expect()...</code>)</li>
                     <li class="fragment">Test "edge cases"</li>
-                    <li class="fragment">Tilstand (State) må ikke deles mellem tests</li>
+                    <li class="fragment">Tilstand (state) må ikke deles mellem tests</li>
                     <li class="fragment">Brug en passende matcher</li>
                     <li class="fragment">
                         Forsøg at opdele i følgende struktur
@@ -269,15 +312,220 @@ describe('Greeter', () => {
 
         <!-- TestBed -->
         <section>
-            <h2>Angular's TestBed</h2>
+            <!-- Intro to Angular's TestBed -->
+            <section data-background="https://media.giphy.com/media/8b3vbrHSwYlBm/giphy.gif">
+                <h1 class="glow">Angular's TestBed</h1>
+            </section>
+
+            <!-- Purpose of TestBed -->
+            <section>
+                <h2>Angular's TestBed</h2>
+                <ul>
+                    <li class="fragment">konfigurerer en <b>Unit under Test</b> (og dens afhængigheder)
+                        <p>Hvor en <b>Unit under Test</b> kan være:</p>
+                        <ul>
+                            <li><code>Component</code></li>
+                            <li><code>Service</code></li>
+                        </ul>
+                    </li>
+                    <li class="fragment">
+                        Interagere med:
+                        <ul>
+                            <li>Browserens rendering af ovenstående</li>
+                            <li>Zone.js</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Example of using TestBed -->
+            <section>
+                <h2>Eksempel med TestBed</h2>
+                <pre><code class="hljs" data-trim>
+describe('MyComponent', () => {
+    let component: MyComponent;
+    let fixture: ComponentFixture&lt;MyComponent&gt;
+
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [ MyComponent ],
+            providers: [ ... ]
+        })
+        .compileComponents();
+    }));
+
+    beforeEach(() => {
+        fixture = TestBed.createComponent(BannerComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
+
+    it('should create', () => {
+        expect(component).toBeDefined();
+    });
+});
+                </code></pre>
+            </section>
+
+            <!-- Async -->
+            <section>
+                <h2><code>async</code></h2>
+                <p>...som <b>ikke</b> er det samme som <code>async</code>-keyword'et</p>
+                <ul>
+                    <li class="fragment">Bruges til at vente på asynkron kode eksekveres</li>
+                    <li class="fragment">Undgår brugen af <img class="inline" src="./assets/jasmine.svg"> Jasmine's <code>done</code>-callback</li>
+                    <li class="fragment">Virker ved at afvente på Zone.js</li>
+                </ul>
+            </section>
+
+            <!-- FakeAsync -->
+            <section>
+                <h2><code>fakeAsync</code></h2>
+                <p>...og dens tilhørende <code>tick</code>-funktion</p>
+                <ul>
+                    <li class="fragment">Kan bruges til at simulere "forløb af tid"</li>
+                    <li class="fragment">Rydder både micro-tasks og macro-tasks:
+                        <ul>
+                            <li><code>setTimeout</code>, <code>Promise</code>s</li>
+                            <li>kald til <code>requestAnimationFrame</code></li>
+                            <li>etc.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Example on using FakeAsync -->
+            <section>
+                <h2>Eksempel med <code>fakeAsync</code></h2>
+                <pre><code class="hljs" data-trim>
+describe('Testing with fakeAsync', () => {
+    let component: MyComponent;
+    let fixture: ComponentFixture&lt;MyComponent&gt;
+
+    ...
+
+    it('should do asynchronous testing', fakeAsync(() => {
+        component.loadData();
+
+        tick();
+
+        expect(component.data).toBeDefined();
+    }));
+});
+                </code></pre>
+            </section>
+
+            <!-- DetectChanges -->
+            <section>
+                <h2><code>detectChanges()</code></h2>
+                <ul>
+                    <li>Ændringer til properties (<code>@Input()</code>-dekorerede, og andre) bør resultere i opdatering af DOM'en</li>
+                    <li class="fragment">Det sker bare ikke (automatisk)...</li>
+                    <li class="fragment">...instruer derfor Angular om at opdatere DOM'en (view'et), med et kald til <code>detectChanges()</code></li>
+                </ul>
+            </section>
         </section>
 
         <!-- ngMocks -->
         <section>
-            <h2>ng-mocks</h2>
-            <p>Et 3. parts library, som kan hentes herfra:
-                <a href="https://github.com/ike18t/ng-mocks">https://github.com/ike18t/ng-mocks</a>
-            </p>
+            <!-- Title slide -->
+            <section>
+                <h2>ng-mocks</h2>
+                <p>Et 3. parts library, som kan hentes herfra:
+                    <a href="https://github.com/ike18t/ng-mocks">https://github.com/ike18t/ng-mocks</a>
+                </p>
+            </section>
+
+            <!-- Intro to ngMocks -->
+            <section>
+                <h2>Problematikken</h2>
+                <p>Er afhængigheder til <code>Component</code>'s, <code>Pipe</code>'s og <code>Directive</code>'s</p>
+            </section>
+
+            <!-- Intro ("HTML"-part) -->
+            <section>
+                <p>Følgende template:</p>
+                <pre><code class="hlhtml" data-trim>
+&lt;kirby-page title=&quot;Normal Page Title&quot;&gt;
+    &lt;kirby-page-actions *kirbyPageActions=&quot;{fixed: true}&quot;&gt;
+    ...
+    &lt;/kirby-page-actions&gt;
+    ...
+&lt;/kirby-page&gt;
+                </code></pre>
+                <p><small>
+                    Kode fra <a href="https://cookbook.kirby.design">cookbook.kirby.design</a>
+                </small></p>
+            </section>
+
+            <!-- Intro ("TestBed"-part) -->
+            <section>
+                <p>Kræver følgende TestBed-konfiguration:</p>
+                <pre><code class="hljs" data-trim>
+describe('Nested Component Structure', () => {
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [
+                KirbyPageComponent,
+                KirbyPageActionsComponent,
+                KirbyPageActionsDirective,
+                ...
+            ],
+        })
+        .compileComponents();
+    }));
+});
+                </code></pre>
+            </section>
+
+            <!-- Intro ("The Problem"-part) -->
+            <section>
+                <h2>Problematikken er</h2>
+                <ul>
+                    <li>Vi tester ikke vores kode i isolation</li>
+                    <li class="fragment">Vi kræver at browseren renderer de faktiske <code>Component</code>'s
+                        <p>Som koster i performance:</p>
+                        <ul>
+                            <li class="fragment">både mht. eksekvering af view-logic</li>
+                            <li class="fragment">men også reflow af DOM</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Solution to "The Problem" -->
+            <section>
+                <h2>Løsningen</h2>
+                <p>Benyt <b>ng-mocks</b>, som laver en shallow <code>Component</code></p>
+                <ul>
+                    <li class="fragment"><code>Component</code> uden template (intet at rendere)</li>
+                    <li class="fragment">Inspicerer <code>Component</code> og laver:
+                        <ul>
+                            <li><code>@Input</code></li>
+                            <li><code>@Output</code> (med tilhørende <code>EventEmitter</code>'s</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- ng-mocks Example -->
+            <section>
+                <p>TestBed-konfiguration kan derefter skrives som:</p>
+                <pre><code class="hljs" data-trim>
+describe('Nested Component Structure', () => {
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [
+                KirbyPageComponent,
+                MockComponent(KirbyPageActionsComponent, ...),
+                MockDirective(KirbyPageActionsDirective, ...),
+            ],
+        })
+        .compileComponents();
+    }));
+});
+                </code></pre>
+            </section>
         </section>
 
         <!-- @ngneat/spectator -->
@@ -296,7 +544,7 @@ describe('Greeter', () => {
 		<section>
 			<h2>Disse slides?</h2>
 			<p>
-				Kan hentes og ses hos:
+				Kan hentes og ses herfra:
 				<a href="https://presentations.skarby.info/presentations/angular/testing">https://presentations.skarby.info/</a>
 			</p>
 		</section>
