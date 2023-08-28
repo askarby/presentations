@@ -1,0 +1,51 @@
+{
+  "angular": {
+    "name": "Angular",
+    "description": "Presentations regarding Angular",
+    "color": "#c3002f",
+    "presentations": [
+      {
+        "name": "Testing Angular",
+        "released": "2020-03-02",
+        "language": "da",
+        "tags": [
+          "Angular",
+          "Unit Testing",
+          "Mock",
+          "Spy",
+          "Spectator",
+          "ng-mocks"
+        ],
+        "description": [
+          "A presentation on effectively unit testing Angular applications.",
+          "",
+          "We'll touch upon subject such as:",
+          "",
+          "- Jasmine and it's matchers",
+          "- Angular's TestBed (ticks, detecting changes, asynchronous code)",
+          "- Spectator (an easier approach to Angular's TestBed)",
+          "- Ng-mocks (focusing on testing a single Component (unit) in your unit tests)"
+        ],
+        "link": "/presentations/angular/testing-angular"
+      }
+    ]
+  },
+  "flutter": {
+    "name": "Flutter",
+    "description": "Presentations regarding Flutter",
+    "color": "#00b5f8",
+    "presentations": []
+  },
+  "java": {
+    "name": "Java",
+    "description": "Presentations regarding Java",
+    "color": "#000000",
+    "presentations": []
+  },
+  "svelte": {
+    "name": "Svelte",
+    "description": "Presentations regarding Svelte",
+    "color": "#ff3e00",
+    "presentations": []
+  }
+}

@@ -1,0 +1,35 @@
+/* Write your global styles here, in PostCSS syntax */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    display: flex;
+
+    margin: 0;
+
+    min-width: 100vw;
+    min-height: 100vh;
+}
+
+ul {
+    @apply list-disc;
+    @apply list-inside;
+}
+
+
+@media (prefers-color-scheme: light) {
+    :root {
+        color: #213547;
+        background-color: #ffffff;
+    }
+
+    a:hover {
+        color: #747bff;
+    }
+
+    button {
+        background-color: #f9f9f9;
+    }
+}
