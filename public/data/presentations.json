@@ -26,7 +26,7 @@
           "- Spectator (an easier approach to Angular's TestBed)",
           "- Ng-mocks (focusing on testing a single Component (unit) in your unit tests)"
         ],
-        "link": "/presentations/angular/testing-angular"
+        "link": "/slides/static/angular/testing"
       }
     ]
   },

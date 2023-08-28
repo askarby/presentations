@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "serve:static": "http-server ./dist -p 8080"
+    "serve:static": "http-server ./dist -p 8080 -c-1",
+    "slides:copy-static": "rm -rf ./dist/slides && mkdir -p ./dist/slides && cp -r ./slides/static ./dist/slides"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.4.2",

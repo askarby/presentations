@@ -1,0 +1,634 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Testing Angular</title>
+
+    <link rel="stylesheet" href="/slides/static/assets/css/reset.css">
+    <link rel="stylesheet" href="/slides/static/assets/css/reveal.css">
+    <link rel="stylesheet" href="/slides/static/assets/css/theme/black.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="/slides/static/assets/lib/css/monokai.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? '/slides/static/assets/css/print/pdf.css' : '/slides/static/assets/css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <!-- Title -->
+        <section>
+            <h1>Testing <img class="inline" src="./assets/angular.svg"></h1>
+            <p>En præsentation omhandlende hvordan vi unit-tester i Angular</p>
+        </section>
+
+        <!-- Table of contents -->
+        <section>
+            <h1>Agenda</h1>
+            <p>Vi skal igennem:</p>
+            <ul>
+                <li>Hvorfor skal vi teste?</li>
+                <li>Jasmine og Matchers</li>
+                <li>Angular's TestBed</li>
+                <li>ngMocks</li>
+                <li>Spectator</li>
+            </ul>
+        </section>
+
+        <!-- Why Test? -->
+        <section>
+            <!-- Intro -->
+            <section data-background="https://media.giphy.com/media/3o72FdPFIn4VjDDfMc/giphy.gif">
+                <h2 class="glow">Hvorfor?</h2>
+                <p>Hvorfor skal vi teste vores kode?</p>
+            </section>
+
+            <!-- Reasoning -->
+            <section>
+                <h2>Fordi!</h2>
+                <ul>
+                    <li>Vi udtrykker krav til kode, og fastholder disse vha. tests</li>
+                    <li>Hvis vi ikke tester, så starter vi basalt set ud med <b>teknisk gæld</b>!</li>
+                </ul>
+            </section>
+
+            <!-- Types of testing --->
+            <section>
+                <h2>Forskellige typer tests</h2>
+                <ul>
+                    <li>
+                        Unit Tests
+                        <p>Tester en énkelt enhed. Hurtige at eksekvere.<br>"White box"-testing.</p>
+                    </li>
+                    <li class="fragment">
+                        Integration Tests
+                        <p>Tester integrationer mellem unit tests.<br>"Grey box"-testing.</p>
+                    </li>
+                    <li class="fragment">End-to-end Tests
+                        <p>Tester et helt system fra ende til anden.<br>"Black box"-testing.</p>
+                    </li>
+                    <li class="fragment">UI Tests
+                        <p>Tester "på glasset"".<br>"Black box"-testing.</p>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Unit Testing -->
+            <section>
+                <h2>Unit Tests</h2>
+                <p>Er hvad vi fokuserer på i denne præsentation</p>
+                <ul>
+                    <li class="fragment">Tester én enhed
+                        <p>(som i traditionel OO er én klasse)</p>
+                    </li>
+                    <li class="fragment">Testes i isolation fra omverdenen</li>
+                    <li class="fragment">Er hurtige at eksekvere</li>
+                    <li class="fragment">Er nemme at skrive
+                        <p>(er under udviklerens kontrol)</p>
+                    </li>
+                </ul>
+            </section>
+        </section>
+
+        <!-- Jasmine and Matchers -->
+        <section>
+            <!-- Intro to Jasmine -->
+            <section>
+                <h2>
+                    <img class="inline" src="./assets/jasmine.svg">
+                    Jasmine og Matchers
+                </h2>
+                <p>Jasmine er i sig selv et test-, mock/spy- og matcher framework.</p>
+                <p>Angular bygger ovenpå dette ved at bruge <img class="inline" src="./assets/karma.svg"> Karma, til eksekvere disse tests</p>
+            </section>
+
+            <!-- Test setup -->
+            <section>
+                <h2>Setup</h2>
+                <pre><code class="hljs" data-trim data-line-numbers="2-4|6-8|10-12|14-16">
+describe('Scenario or unit under test', () => {
+    beforeAll(() => {
+        // Én gang før tests'ne i "describe"-blokken eksekveres
+    });
+
+    afterAll(() => {
+        // Én gang efter tests'ne i "describe"-blokken er eksekveret
+    });
+
+    beforeEach(() => {
+        // Hver gang, før en test eksekveres
+    });
+
+    afterEach(() => {
+        // Hver gang, efter en test eksekveres
+    });
+});
+					</code></pre>
+            </section>
+
+            <!-- Testing -->
+            <section>
+                <h2>Tests</h2>
+                <pre><code class="hljs" data-trim data-line-numbers="2-4|6-15">
+describe('CalculatorService', () => {
+    it('should be possible to reset the service', () => {
+        // Implementering af test placeres her
+    });
+
+    describe('division', () => {
+        // Tests kan underopdeles (nestes) i "describe"-blokke
+
+        it('should be able to divide two numbers', () => {
+            // ...
+        });
+
+        it('should not be possible to divide by zero', () => {
+            // ...
+        });
+    });
+});
+					</code></pre>
+            </section>
+
+            <!-- Matchers -->
+            <section>
+                <h2>Matchers</h2>
+                <p>Jasmine kommer med en del indbyggede matchers...</p>
+                <pre><code class="hljs" data-trim>expect(instance).toBe(instance);
+expect(number).toBeCloseTo(number, decimalPlaces);
+expect(mixed).toBeDefined();
+expect(mixed).toBeFalsy();
+expect(number).toBeGreaterThan(number);
+expect(number).toBeLessThan(number);
+expect(number).toBeNaN();
+expect(mixed).toBeNull();
+expect(mixed).toBeTruthy();
+expect(mixed).toBeUndefined();
+expect(array).toContain(member);
+expect(mixed).toEqual(mixed);
+expect(spy).toHaveBeenCalled();
+expect(spy).toHaveBeenCalledTimes(number);
+expect(spy).toHaveBeenCalledWith(...arguments);
+expect(mixed).toMatch(pattern);
+expect(fn).toThrow(string);
+expect(fn).toThrowError(string);
+                </code></pre>
+            </section>
+
+            <!-- Custom Matchers -->
+            <section>
+                <h2>Custom Matchers</h2>
+                <p>
+                    ...hvis du ikke kan finde en matcher som dækker dit behov, så
+                    kan du skrive din egen.
+                </p>
+                <p class="fragment">
+                    Sandsynligheden for at den du skal bruge allerede findes, er relativ stor!
+                </p>
+            </section>
+
+            <!-- Spies and Mocks -->
+            <section>
+                <p>Lad os kigge på Spies og Mocks, med følgende kontekst:</p>
+                <pre><code class="hljs" data-trim>
+class NameRegistry {
+    names = ['John', 'Paul', 'George', 'Ringo' ]
+    getName() { return this.names[Math.floor(Math.random() * this.names.length)]}
+}
+class Greeter {
+    constructor(private registry: NameRegistry) {};
+    greet(greeting: string) { return `${greeting}, ${this.registry.getName()}!`; );
+}
+</code></pre>
+            </section>
+
+            <!-- Spies -->
+            <section>
+                <h2>Spy</h2>
+                <pre><code class="hljs" data-trim data-line-numbers="5">
+describe('Greeter', () => {
+    it('should greet with random name', () => {
+        const registry = new NameRegistry();
+        const greeter = new Greeter(registry);
+        spyOn(registry, 'getName');
+
+        greeter.greet('Hello there');
+
+        expect(registry, 'getName').toHaveBeenCalled();
+    });
+});
+                </code></pre>
+            </section>
+
+            <!-- Mocks -->
+            <section>
+                <h2>Mock</h2>
+                <pre><code class="hljs" data-trim data-line-numbers="5">
+describe('Greeter', () => {
+    it('should greet with random name', () => {
+        const registry = new NameRegistry();
+        const greeter = new Greeter(registry);
+        spyOn(registry, 'getName').and.returnValue('Bobby');
+
+        const greeeting = greeter.greet('Hello there');
+
+        expect(greeting).toBe('Hello there, Bobby');
+    });
+});
+                </code></pre>
+            </section>
+
+            <!-- Asynchronous testing (observables) -->
+            <section>
+                <h2>Asynkron test</h2>
+                <p>...når vi bruger observables</p>
+                <pre><code class="hljs" data-trim data-line-numbers="7">
+describe('Observables', () => {
+    const observable$ = ...
+
+    it('should indicate when observable is done', (done) => {
+        observable$.subscribe((data) => {
+            expect(data).toBeTruthy();
+            done();
+        });
+    });
+});
+                </code></pre>
+            </section>
+
+            <!-- Asynchronous testing (promises) -->
+            <section>
+                <h2>Asynkron test</h2>
+                <p>...når vi bruger promises</p>
+                <pre><code class="hljs" data-trim data-line-numbers="7|11-12">
+describe('Promises', () => {
+    const createPromise = ...
+
+    it('should indicate when promise is done', (done) => {
+        createPromise().then((data) => {
+            expect(data).toBeTruthy();
+            done();
+        });
+    });
+
+    it('should use async mechanism for ES2015', async () => {
+        const data = await createPromise();
+        expect(data).toBeTruthy();
+    });
+});
+                </code></pre>
+            </section>
+
+            <!-- Rules for testing in Jasmine -->
+            <section>
+                <h2>Regler for at teste</h2>
+                <ul>
+                    <li>Beskriv altid hvad du tester</li>
+                    <li class="fragment">Sørg altid for at ha' expectations (<code>expect()...</code>)</li>
+                    <li class="fragment">Test "edge cases"</li>
+                    <li class="fragment">Tilstand (state) må ikke deles mellem tests</li>
+                    <li class="fragment">Brug en passende matcher</li>
+                    <li class="fragment">
+                        Forsøg at opdele i følgende struktur
+                        <ul>
+                            <li>Arrange</li>
+                            <li>Act</li>
+                            <li>Assert</li>
+                        </ul>
+                        (ikke en regel, men gør det lettere at læse tests, som er skrevet således).
+                    </li>
+                </ul>
+            </section>
+        </section>
+
+        <!-- TestBed -->
+        <section>
+            <!-- Intro to Angular's TestBed -->
+            <section data-background="https://media.giphy.com/media/8b3vbrHSwYlBm/giphy.gif">
+                <h1 class="glow">Angular's TestBed</h1>
+            </section>
+
+            <!-- Purpose of TestBed -->
+            <section>
+                <h2>Angular's TestBed</h2>
+                <ul>
+                    <li class="fragment">konfigurerer en <b>Unit under Test</b> (og dens afhængigheder)
+                        <p>Hvor en <b>Unit under Test</b> kan være:</p>
+                        <ul>
+                            <li><code>Component</code></li>
+                            <li><code>Service</code></li>
+                        </ul>
+                    </li>
+                    <li class="fragment">
+                        Interagere med:
+                        <ul>
+                            <li>Browserens rendering af ovenstående</li>
+                            <li>Zone.js</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Example of using TestBed -->
+            <section>
+                <h2>Eksempel med TestBed</h2>
+                <pre><code class="hljs" data-trim>
+describe('MyComponent', () => {
+    let component: MyComponent;
+    let fixture: ComponentFixture&lt;MyComponent&gt;
+
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [ MyComponent ],
+            providers: [ ... ]
+        })
+        .compileComponents();
+    }));
+
+    beforeEach(() => {
+        fixture = TestBed.createComponent(BannerComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
+
+    it('should create', () => {
+        expect(component).toBeDefined();
+    });
+});
+                </code></pre>
+            </section>
+
+            <!-- Async -->
+            <section>
+                <h2><code>async</code></h2>
+                <p>...som <b>ikke</b> er det samme som <code>async</code>-keyword'et</p>
+                <ul>
+                    <li class="fragment">Bruges til at vente på asynkron kode eksekveres</li>
+                    <li class="fragment">Undgår brugen af <img class="inline" src="./assets/jasmine.svg"> Jasmine's <code>done</code>-callback</li>
+                    <li class="fragment">Virker ved at afvente på Zone.js</li>
+                </ul>
+            </section>
+
+            <!-- FakeAsync -->
+            <section>
+                <h2><code>fakeAsync</code></h2>
+                <p>...og dens tilhørende <code>tick</code>-funktion</p>
+                <ul>
+                    <li class="fragment">Kan bruges til at simulere "forløb af tid"</li>
+                    <li class="fragment">Rydder både micro-tasks og macro-tasks:
+                        <ul>
+                            <li><code>setTimeout</code>, <code>Promise</code>s</li>
+                            <li>kald til <code>requestAnimationFrame</code></li>
+                            <li>etc.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Example on using FakeAsync -->
+            <section>
+                <h2>Eksempel med <code>fakeAsync</code></h2>
+                <pre><code class="hljs" data-trim>
+describe('Testing with fakeAsync', () => {
+    let component: MyComponent;
+    let fixture: ComponentFixture&lt;MyComponent&gt;
+
+    ...
+
+    it('should do asynchronous testing', fakeAsync(() => {
+        component.loadData();
+
+        tick();
+
+        expect(component.data).toBeDefined();
+    }));
+});
+                </code></pre>
+            </section>
+
+            <!-- DetectChanges -->
+            <section>
+                <h2><code>detectChanges()</code></h2>
+                <ul>
+                    <li>Ændringer til properties (<code>@Input()</code>-dekorerede, og andre) bør resultere i opdatering af DOM'en</li>
+                    <li class="fragment">Det sker bare ikke (automatisk)...</li>
+                    <li class="fragment">...instruer derfor Angular om at opdatere DOM'en (view'et), med et kald til <code>detectChanges()</code></li>
+                </ul>
+            </section>
+        </section>
+
+        <!-- ngMocks -->
+        <section>
+            <!-- Title slide -->
+            <section>
+                <h2>ng-mocks</h2>
+                <p>Et 3. parts library, som kan hentes herfra:
+                    <a href="https://github.com/ike18t/ng-mocks">https://github.com/ike18t/ng-mocks</a>
+                </p>
+            </section>
+
+            <!-- Intro to ngMocks -->
+            <section>
+                <h2>Problematikken</h2>
+                <p>Er afhængigheder til <code>Component</code>'s, <code>Pipe</code>'s og <code>Directive</code>'s</p>
+            </section>
+
+            <!-- Intro ("HTML"-part) -->
+            <section>
+                <p>Følgende template:</p>
+                <pre><code class="hlhtml" data-trim>
+&lt;kirby-page title=&quot;Normal Page Title&quot;&gt;
+    &lt;kirby-page-actions *kirbyPageActions=&quot;{fixed: true}&quot;&gt;
+    ...
+    &lt;/kirby-page-actions&gt;
+    ...
+&lt;/kirby-page&gt;
+                </code></pre>
+                <p><small>
+                    Kode fra <a href="https://cookbook.kirby.design">cookbook.kirby.design</a>
+                </small></p>
+            </section>
+
+            <!-- Intro ("TestBed"-part) -->
+            <section>
+                <p>Kræver følgende TestBed-konfiguration:</p>
+                <pre><code class="hljs" data-trim>
+describe('Nested Component Structure', () => {
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [
+                KirbyPageComponent,
+                KirbyPageActionsComponent,
+                KirbyPageActionsDirective,
+                ...
+            ],
+        })
+        .compileComponents();
+    }));
+});
+                </code></pre>
+            </section>
+
+            <!-- Intro ("The Problem"-part) -->
+            <section>
+                <h2>Problematikken er</h2>
+                <ul>
+                    <li>Vi tester ikke vores kode i isolation</li>
+                    <li class="fragment">Vi kræver at browseren renderer de faktiske <code>Component</code>'s
+                        <p>Som koster i performance:</p>
+                        <ul>
+                            <li class="fragment">både mht. eksekvering af view-logic</li>
+                            <li class="fragment">men også reflow af DOM</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Solution to "The Problem" -->
+            <section>
+                <h2>Løsningen</h2>
+                <p>Benyt <b>ng-mocks</b>, som laver en shallow <code>Component</code></p>
+                <ul>
+                    <li class="fragment"><code>Component</code> uden template (intet at rendere)</li>
+                    <li class="fragment">Inspicerer <code>Component</code> og laver:
+                        <ul>
+                            <li><code>@Input</code></li>
+                            <li><code>@Output</code> (med tilhørende <code>EventEmitter</code>'s</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- ng-mocks Example -->
+            <section>
+                <p>TestBed-konfiguration kan derefter skrives som:</p>
+                <pre><code class="hljs" data-trim>
+describe('Nested Component Structure', () => {
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [
+                KirbyPageComponent,
+                MockComponent(KirbyPageActionsComponent, ...),
+                MockDirective(KirbyPageActionsDirective, ...),
+            ],
+        })
+        .compileComponents();
+    }));
+});
+                </code></pre>
+            </section>
+        </section>
+
+        <!-- @ngneat/spectator -->
+        <section>
+			<!-- Title slide -->
+			<section data-background="https://media.giphy.com/media/8V6fQeeWTRHq0/giphy.gif">
+				<h2 class="glow">Spectator</h2>
+			</section>
+
+            <!-- Link (where to get spectator) -->
+            <section>
+                <p>Et 3. parts library som kan hentest herfra:
+                    <a href="https://github.com/ngneat/spectator/">https://github.com/ngneat/spectator/</a>
+                </p>
+                <img class="inline" src="./assets/spectator.svg">
+            </section>
+
+            <!-- What is Spectator -->
+            <section>
+                <h2>Hvad er Spectator?</h2>
+                <p>Et library / framework som...</p>
+                <ul>
+                    <li class="fragment">Wrapper <img class="inline" src="./assets/angular.svg"> Angular's TestBed</li>
+                    <li class="fragment">Fjerner boilerplate (fra brug af TestBed)</li>
+                    <li class="fragment">Leverer utilities</li>
+                    <li class="fragment">... og matchers</li>
+                </ul>
+            </section>
+
+            <!-- Usage Principle -->
+            <section>
+                <h2>Princippet</h2>
+                <p>... bag brug af <b>Spectator</b> er:</p>
+                <ul>
+                    <li class="fragment">Opret en factory</li>
+                    <li class="fragment">Brug factory til at få fat i Spectator-instans</li>
+                    <li class="fragment">Brug Spectator-instans til at manipulere med:
+                        <ul>
+                            <li>Component</li>
+                            <li>Query DOM'en</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Spectator Example -->
+            <section>
+                <pre><code class="hljs" data-trim>
+describe('Testing with Spectator', () => {
+    const createComponent = createComponentFactory({
+        component: MyComponent,
+        declarations: ...,
+        providers: ...
+        mocks: ...
+    });
+    let spectator: Spectator&lt;MyComponent&gt;;
+
+    beforeEach(() => {
+        spectator = createComponent();
+    });
+});
+                </code></pre>
+            </section>
+
+            <!-- Additional usages -->
+            <section>
+                <p>... der findes yderligere factory creators:</p>
+                <ul>
+                    <li><code>createHostFactory</code></li>
+                    <li><code>createRoutingFactory</code></li>
+                    <li><code>createDirectiveFactory</code></li>
+                    <li><code>createServiceFactory</code></li>
+                    <li>m.fl.</li>
+                </ul>
+            </section>
+        </section>
+
+		<!-- Final slide (link to presentation etc.) -->
+		<section>
+			<h2>Spørgsmål?</h2>
+			<p>
+				Disse slides kan hentes og ses herfra:
+				<a href="https://presentations.skarby.info/presentations/angular/testing">https://presentations.skarby.info/</a>
+			</p>
+		</section>
+    </div>
+</div>
+
+<script src="/slides/static/assets/js/reveal.js"></script>
+
+<script>
+    // More info about config & dependencies:
+    // - https://github.com/hakimel/reveal.js#configuration
+    // - https://github.com/hakimel/reveal.js#dependencies
+    Reveal.initialize({
+        hash: true,
+        dependencies: [
+            {src: '/slides/static/assets/plugin/markdown/marked.js'},
+            {src: '/slides/static/assets/plugin/markdown/markdown.js'},
+            {src: '/slides/static/assets/plugin/highlight/highlight.js'},
+            {src: '/slides/static/assets/plugin/notes/notes.js', async: true}
+        ]
+    });
+</script>
+</body>
+</html>
