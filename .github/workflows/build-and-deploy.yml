@@ -24,6 +24,9 @@ jobs:
       - name: Build Landing page (svelte) application
         run: npm run build
 
+      - name: Prepare static presentations
+        run: npm run slides:init
+
       - name: Copy static presentations
         run: npm run slides:copy-static
 

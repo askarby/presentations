@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "serve:static": "live-server --port=8080 --wait=500 --mount=/:./dist",
-    "slides:init": "rm -rf ./dist/slides && mkdir -p ./dist/slides",
+    "slides:init": "rm -rf ./dist/slides && mkdir -p ./dist/slides/static",
     "slides:copy-static": "cp -r ./slides/static ./dist/slides",
     "generate:code-images": "node ./snippets/create-images.js",
     "watch:slides:copy-static": "nodemon --watch slides/static -e html,svg,png,jpg,gif --exec \"npm run slides:copy-static\"",
