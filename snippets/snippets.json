@@ -1,0 +1,9 @@
+[
+    {
+        "name": "Svelte 4, Lightning Talk",
+        "locations": {
+            "source": "snippets/svelte/svelte4-lightning-talk",
+            "output": "dist/slides/static/svelte/svelte4-lightning-talk/assets/snippets"
+        }
+    }
+]

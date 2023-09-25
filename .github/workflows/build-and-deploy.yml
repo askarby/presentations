@@ -27,6 +27,9 @@ jobs:
       - name: Copy static presentations
         run: npm run slides:copy-static
 
+      - name: Generate "Carbon now" images from snippets
+        run: npm run generate:code-images
+
       - name: Deploy to GH-pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:

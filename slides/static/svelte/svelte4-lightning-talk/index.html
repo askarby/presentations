@@ -1,0 +1,507 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Svelte 4 - Lightning Talk</title>
+
+    <link rel="stylesheet" href="/slides/static/assets/css/reset.css">
+    <link rel="stylesheet" href="/slides/static/assets/css/reveal.css">
+    <link rel="stylesheet" href="/slides/static/assets/css/theme/black.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="/slides/static/assets/lib/css/monokai.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? '/slides/static/assets/css/print/pdf.css' : '/slides/static/assets/css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <!-- Title -->
+        <section>
+            <h1><img class="inline" src="./assets/svelte.svg">velte</h1>
+            <p>A lightning talk about productivity and reactivity</p>
+        </section>
+
+        <!-- General / Introductionary-->
+        <section>
+            <!-- Who am I -->
+            <section>
+                <h1>Hi, I'm...</h1>
+                <ul>
+                    <li>Anders Skarby</li>
+                    <li>A freelance software developer</li>
+                    <li>❤️ web development (especially <img class="inline" src="./assets/angular.svg">)</li>
+                </ul>
+            </section>
+
+            <!-- Questions, comments, acquiring the presentation -->
+            <section>
+                <h1>Practical stuff</h1>
+                <ul>
+                    <li>🕰️ is limited <small>(20 mins will go by <span class="glow">fast</span>!)</small></li>
+                    <li>Hold your 🙋‍♂️ until the end</li>
+                    <li>... or <b>Liam Neeson</b> me <small>(come find me after the talk)</small></li>
+                    <li>🛝s at <a href="https://presentations.skarby.info/">presentations.skarby.info</a></li>
+                </ul>
+            </section>
+        </section>
+
+        <!-- Table of contents / Agenda-->
+        <section>
+            <h1>Agenda</h1>
+            <p>The next 20 minutes will be about...</p>
+            <ul>
+                <li>A bit of history</li>
+                <li>What is <img class="inline" src="./assets/svelte.svg">velte</li>
+                <li>How-to use <img class="inline" src="./assets/svelte.svg">velte</li>
+                <li>Next steps</li>
+            </ul>
+        </section>
+
+        <!-- A bit of history? -->
+        <section>
+            <!-- Computers were huge -->
+            <section data-background="https://media.giphy.com/media/3ov9jNziFTMfzSumAw/giphy.gif">
+                <h2 class="glow">Once upon a time</h2>
+                <p>Computers were huge</p>
+            </section>
+
+            <!-- 1950-60s -->
+            <section data-background="https://media.giphy.com/media/S5WCI4GtTTq5v8aV7d/giphy.gif">
+                <h2 class="glow">1950-60s</h2>
+                <p>Mainframes</p>
+                <small>The size of a house of a warehouse</small>
+            </section>
+
+            <!-- 1960-70s -->
+            <section>
+                <h2 class="glow">1960-70s</h2>
+                <p>Mini computers</p>
+                <small>Teletypes, 4000 word memory...</small>
+            </section>
+
+            <!-- 1970s -->
+            <section data-background="./assets/apple1-computer.jpg">
+                <h2 class="glow">1970s</h2>
+            </section>
+
+            <!-- What to use it for -->
+            <section>
+                <h2>What did you use it for?</h2>
+                <ul>
+                    <li>Geeks / Nerds:
+                        <ul>
+                            <li>Because it was cool</li>
+                            <li>Wanted it for tinkering</li>
+                        </ul>
+                    </li>
+                    <li>Normal users:
+                        <ul>
+                            <li>Needed justification for purchase</li>
+                            <li>They needed a <b>killer app</b>!</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- 1970-80s+ -->
+            <section data-background="./assets/apple-ii.png">
+                <h2 class="glow">Late 1970s-80s</h2>
+            </section>
+
+            <!-- VisiCalc -->
+            <section data-background="./assets/visicalc.png">
+                <h2 class="glow">VisiCalc</h2>
+                <p>The first killer app</p>
+                <p>Huge productivity boost</p>
+            </section>
+
+            <!-- VisiCalc was slow  -->
+            <section data-background="https://media.giphy.com/media/l2JHVUriDGEtWOx0c/giphy.gif">
+                <h2>VisiCalc was <span class="glow">slow!</span></h2>
+            </section>
+
+            <!-- Lotus 1-2-3 -->
+            <section data-background="./assets/lotus-1-2-3.png">
+                <h2>Replaced by <span class="glow">Lotus 1-2-3</span></h2>
+            </section>
+
+            <!-- Fixed by reactive architecture -->
+            <section>
+                <h2>Reactivity</h2>
+                <ul>
+                    <li><span class="glow">VisiCalc</span> recalculated "everything" on every change</li>
+                    <li><span class="glow">Lotus 1-2-3</span> only recalculated based on changed cells</li>
+                    <li>Reactivity is "reacting to changes"</li>
+                    <li>Reactivity = Performance</li>
+                </ul>
+            </section>
+
+            <!-- Frameworks are not reactive-->            
+            <section>
+                <h2>The unfortunate truth</h2>
+                <ul>
+                    <li>
+                        The popular <span style="position: relative;">frameworks <span style="position:absolute; z-index: 1; top: -1.5rem; left: -2rem; font-size: 0.6em">web</span></span> aren't (fully) reactive!
+                    </li>
+                    <li class="fragment"><img class="inline" src="./assets/react.svg"> React is not reactive!</li>
+                    <li class="fragment"><img class="inline" src="./assets/angular.svg"> Angular is not reactive!</li>
+                </ul>
+            </section>
+        </section>
+
+        <!-- What is Svelte -->
+        <section>
+            <!-- Title -->
+            <section>
+                <h2>What is <img class="inline" src="./assets/svelte.svg">velte</h2>
+            </section>
+
+            <!-- It is -->
+            <section>
+                <h2><img class="inline" src="./assets/svelte.svg">velte is</h2>
+                <ul>
+                    <li>A <span class="glow">Reactive</span> web framework</li>
+                    <li>Simple to use</li>
+                    <li>Fast!</li>                    
+                </ul>
+            </section>
+
+            <!-- Simple? -->
+            <section data-background="https://media.giphy.com/media/aR6JyO12RkwE5P7lxb/giphy.gif">
+                <h2>Simple, how?</h2>
+                <ul>
+                    <li>Simple reactive constructs</li>
+                    <li>Compiler does the hard stuff</li>
+                    <li><img class="inline" src="./assets/typescript.svg"> support built-in</li>
+                </ul>
+            </section>
+
+            <!-- Fast -->
+            <section data-background="https://media.giphy.com/media/B1uajA01vvL91Urtsp/giphy.gif">
+                <h2>Fast, how?</h2>
+                <ul>
+                    <li>Build using <img class="inline" src="./assets/vite.svg">ite</li>
+                    <li>
+                        <img class="inline" src="./assets/vite.svg">ite is faster due to 
+                        <span class="glow">prebundling</span> dependencies, and <span class="glow">separating</span> 
+                        source code from dependencies.
+                    </li>
+                    <li>Simpler code is faster to write</li>
+                    <li>Less thought about reactivity = faster to write</li>
+                </ul>
+            </section>
+
+            <!-- A closer look -->
+            <section>
+                <h2>Let's learn <img class="inline" src="./assets/svelte.svg">velte</h2>
+                <p>
+                    We'll compare how things are done in <img class="inline" src="./assets/svelte.svg">velte,<br> with
+                    how they're done in:
+                    <ul>
+                        <li><img class="inline" src="./assets/react.svg"> React</li>
+                        <li><img class="inline" src="./assets/angular.svg"> Angular</li>
+                    </ul>
+                </p>
+            </section>
+        </section>
+
+        <!-- How-to use Svelte -->
+        <section>
+            <section>
+                <h2>How-to use <img class="inline" src="./assets/svelte.svg">velte</h2>
+            </section>
+
+            <!-- Structure of Component -->
+            <section>
+                <h2>Structure</h2>
+                <div class="multi-col">
+                    <div class="col"> 
+                        <img width="100%" src="./assets/snippets/structure.png">
+                    </div>
+                    <div class="col">
+                        <ul>
+                            <li><span class="glow">One</span> Component per file</li>
+                            <li>Components are named <span class="glow">uppercase</span></li>
+                            <li><code class="glow">.svelte</code> extension</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Component properties -->
+            <section>
+                <h2>Component properties</h2>
+                <div class="multi-col">
+                    <div class="col"> 
+                        <h3><img class="inline" src="./assets/react.svg"> React</h3>
+                        <img src="./assets/snippets/react-properties.png">
+                    </div>
+                    <div class="col"> 
+                        <h3><img class="inline" src="./assets/angular.svg"> Angular</h3>
+                        <img src="./assets/snippets/angular-inputs.png">
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2><img class="inline" src="./assets/svelte.svg"> Component properties</h2>
+                <div class="multi-col">
+                    <div class="col"> 
+                        <img src="./assets/snippets/component-properties.png">                        
+                    </div>
+                    <div class="col"> 
+                        <ul>
+                            <li><code class="glow">export</code> exposes properties</li>
+                            <li><code>export</code> is normally used for exposing constructs in ESM</li>
+                            <li><code>export</code> is used by the compiler, differently!</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Component events -->
+            <section>
+                <h2>Component events</h2>
+                <div class="multi-col">
+                    <div class="col"> 
+                        <h3><img class="inline" src="./assets/react.svg"> React</h3>
+                        <img src="./assets/snippets/react-callback.png">
+                    </div>
+                    <div class="col"> 
+                        <h3><img class="inline" src="./assets/angular.svg"> Angular</h3>
+                        <img src="./assets/snippets/angular-outputs.png">
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2><img class="inline" src="./assets/svelte.svg"> Component events</h2>
+                <div class="multi-col">
+                    <div class="col"> 
+                        <img src="./assets/snippets/component-events.png">                        
+                    </div>
+                    <div class="col"> 
+                        <ul>
+                            <li>Use <code class="glow">createEventDispatcher</code></li>
+                            <li>Propogate the event to the parent, using the dispatcher</li>
+                            <li>Dispatched event can have payload</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Template blocks -->
+            <section>
+                <h2>Templates blocks</h2>
+                <p><img class="inline" src="./assets/svelte.svg">velte supports templated logic constructs:</p>
+                <ul>
+                    <li><code>if</code> blocks</li>
+                    <li><code>each</code> blocks (loops)</li>
+                    <li><code>await</code> blocks (promise handling)</li>
+                </ul>
+            </section>
+
+            <!-- If blocks -->
+            <section>
+                <h2>TODO: If blocks</h2>
+                <div class="multi-col">
+                    <div class="col"> 
+                        <h3><img class="inline" src="./assets/react.svg"> React</h3>
+                        <img src="">
+                    </div>
+                    <div class="col"> 
+                        <h3><img class="inline" src="./assets/angular.svg"> Angular</h3>
+                        <img src="">
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>TODO: <img class="inline" src="./assets/svelte.svg"> If blocks</h2>
+                <div class="multi-col">
+                    <div class="col"> 
+                        <img src="">                        
+                    </div>
+                    <div class="col"> 
+                        <ul>
+                            <li>Similar to imperative <code>if</code> statements</li>
+                            <li>Notice different usages of <code>#</code>, <code>:</code> and <code>/</code></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Each (loop) blocks -->
+            <section>
+                <h2>TODO: Loops</h2>
+                <div class="multi-col">
+                    <div class="col"> 
+                        <h3><img class="inline" src="./assets/react.svg"> React</h3>
+                        <img src="">
+                    </div>
+                    <div class="col"> 
+                        <h3><img class="inline" src="./assets/angular.svg"> Angular</h3>
+                        <img src="">
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>TODO: <img class="inline" src="./assets/svelte.svg"> Loops (each blocks)</h2>
+                <div class="multi-col">
+                    <div class="col"> 
+                        <img src="">                        
+                    </div>
+                    <div class="col"> 
+                        <ul>
+                            <li>Similar to imperative <code>for-each</code> statements</li>
+                            <li>Nice handling of "empty iterables" <code>:else</code></li>
+                            <li>Tracking of elements using "keys"</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Await (promise) blocks -->
+            <section>
+                <h2>TODO: Promises</h2>
+                <div class="multi-col">
+                    <div class="col"> 
+                        <h3><img class="inline" src="./assets/react.svg"> React</h3>
+                        <img src="">
+                    </div>
+                    <div class="col"> 
+                        <h3><img class="inline" src="./assets/angular.svg"> Angular</h3>
+                        <img src="">
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>TODO: <img class="inline" src="./assets/svelte.svg"> Promises (await blocks)</h2>
+                <div class="multi-col">
+                    <div class="col"> 
+                        <img src="">                        
+                    </div>
+                    <div class="col"> 
+                        <ul>
+                            <li>Similar to imperative <code>.then(...).catch(...)</code> usage</li>
+                            <li>Optional pre-resolve state (move <code>then</code> to <code>await</code> block)</li>
+                            <li><code>catch</code> block can be omitted</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Binding -->
+            <section>
+                <h2>TODO: Data binding</h2>
+                <div class="multi-col">
+                    <div class="col"> 
+                        <h3><img class="inline" src="./assets/react.svg"> React</h3>
+                        <img src="">
+                    </div>
+                    <div class="col"> 
+                        <h3><img class="inline" src="./assets/angular.svg"> Angular</h3>
+                        <img src="">
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>TODO: <img class="inline" src="./assets/svelte.svg"> Data binding</h2>
+                <div class="multi-col">
+                    <div class="col"> 
+                        <img src="">                        
+                    </div>
+                    <div class="col"> 
+                        <ul>
+                            <li>Easy to write...</li>
+                            <li>Easy to understand!</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- State management -->
+            <section>
+                <h2><img class="inline" src="./assets/svelte.svg">tate management</h2>
+            </section>
+
+            <section>
+                <h2><img class="inline" src="./assets/svelte.svg">tores</h2>
+                <p>TODO!</p>
+            </section>
+
+            <section>
+                <h2>The <img class="inline" src="./assets/svelte.svg">tore contract</h2>
+                <p>TODO!</p>
+            </section>
+
+            <section data-background="https://media.giphy.com/media/msBAKoAHINITC/giphy.gif">
+                <p>This looks alot like <img class="inline" src="./assets/rxjs.svg"><span class="glow">!</span></p>
+            </section>
+        </section>
+
+        <!-- Next steps -->
+        <section>
+            <section data-background="https://media.giphy.com/media/1dakUfQRBWWjfmPFzF/giphy.gif">
+                <h2>Is <img class="inline" src="./assets/svelte.svg">velte cool? </h2>
+                <p>... then, what's up next?</p>
+            </section>
+
+            <section>
+                <h2>Follow <img class="inline" src="./assets/svelte.svg">velte's tutorial</h2>
+                <p>... can be found at <a href="https://learn.svelte.dev">learn.svelte.dev</a>!</p>
+            </section>
+
+            <section>
+                <h2>Going further?</h2>
+                <p>Have a look at <img class="inline" src="./assets/svelte.svg">velteKit</p>
+                <ul>
+                    <li>
+                        A meta-framework, like <br>
+                        <a href="https://analogjs.org/">Analog</a> (for <img class="inline" src="./assets/angular.svg"> Angular),
+                        <a href="https://nextjs.org/">Next.js</a> (for <img class="inline" src="./assets/react.svg"> React) or
+                        <a href="https://nuxt.com/">Nuxt</a> (for <img class="inline" src="./assets/vue.svg"> Vue)
+                    </li>
+                    <li>Read about it at <a href="https://kit.svelte.dev/">kit.svelte.dev</a></li>
+                </ul>
+            </section>
+        </section>
+
+        <!-- The end -->
+        <section data-background="https://media.giphy.com/media/7FCFG6sYV5UxW/giphy.gif">
+            <h2 class="glow">Questions?</h2>
+        </section>
+    </div>
+</div>
+
+<script src="/slides/static/assets/js/reveal.js"></script>
+
+<script>
+    // More info about config & dependencies:
+    // - https://github.com/hakimel/reveal.js#configuration
+    // - https://github.com/hakimel/reveal.js#dependencies
+    Reveal.initialize({
+        hash: true,
+        dependencies: [
+            {src: '/slides/static/assets/plugin/markdown/marked.js'},
+            {src: '/slides/static/assets/plugin/markdown/markdown.js'},
+            {src: '/slides/static/assets/plugin/highlight/highlight.js'},
+            {src: '/slides/static/assets/plugin/notes/notes.js', async: true}
+        ]
+    });
+</script>
+</body>
+</html>

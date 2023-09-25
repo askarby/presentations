@@ -46,6 +46,28 @@
     "name": "Svelte",
     "description": "Presentations regarding Svelte",
     "color": "#ff3e00",
-    "presentations": []
+    "presentations": [
+      {
+        "name": "Svelte Lightning Talk",
+        "released": "2023-09-26",
+        "language": "en",
+        "tags": [
+          "Svelte",
+          "Lightning Talk",
+          "Introduction"
+        ],
+        "description": [
+          "A presentation about what Svelte is.",
+          "",
+          "In this (lightning talk) we'll touch upon subject such as:",
+          "",
+          "- What is Svelte",
+          "- What is reactivity",
+          "- Getting started with Svelte",
+          "- Next steps"
+        ],
+        "link": "/slides/static/svelte/svelte4-lightning-talk"
+      }
+    ]
   }
 }
