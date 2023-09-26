@@ -1,5 +1,5 @@
 <script>
-    let members = []];
+    let members = [];
     function load() {
         members.push('John', 'Paul', 'George', 'Ringo');
     }
